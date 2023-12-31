@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Mywifi</string>
+    <string name="window1">呼呼呼%1$d</string>
+    <string name="登录">登  录</string>
+    <string name="注册">注  册</string>
+    <string name="昵称">名  称：</string>
+    <string name="邮箱">邮  箱：</string>
+    <string name="密码">密  码：</string>
+    <string name="性别">性  别：</string>
+    <string name="保存">保  存</string>
+    <string name="取消">取  消</string>
+    <string name="名字">名  字：</string>
+
+    <string name="新闻">新闻</string>
+    <string name="订阅">订阅</string>
+    <string name="图片">图片</string>
+    <string name="其他">其他</string>
+    <string name="注销">注销后退出</string>
+    <string name="切换账户">切换账户</string>
+    <string name="修改密码">修改密码</string>
+    <string name="我的信息">我的信息</string>
+
+    <string name="首页标题">首页标题</string>
+    <string name="发送验证码">发送验证码</string>
+    <string name="请输入邮箱">请输入邮箱</string>
+    <string name="请输入设备名字">请输入设备名字</string>
+    <string name="验证码">验证码：</string>
+    <string name="请输入验证码">请输入验证码</string>
+    <string name="确认密码">确认密码</string>
+    <string name="邮箱验证码">邮箱验证码：</string>
+    <string name="请输入密码">请输入密码</string>
+    <string name="邮箱登录">邮箱登录</string>
+    <string name="编辑">编辑</string>
+    <string name="选择头像图片">选择头像图片</string>
+    <string name="头像图片">头像图片</string>
+    <string name="新闻图片">新闻图片</string>
+    <string name="邮箱不可修改">邮箱不可修改</string>
+    <string name="男">男</string>
+    <string name="女">女</string>
+    <string name="登录界面背景">登录界面背景</string>
+    <string name="用户信息界面背景">用户信息界面背景</string>
+    <string name="修改信息界面背景">修改信息界面背景</string>
+    <string name="邮箱登录背景">邮箱登录背景</string>
+    <string name="添加新设备">添加新设备</string>
+    <string name="请输入与设备共享的WiFi名">请输入与设备共享的WiFi名</string>
+    <string name="WiFi密码">WiFi密码</string>
+    <string name="发送">发送</string>
+    <string name="设备连接WiFi提醒">注：节点设备目前仅支持 字母、数字、部分符号 组成的WiFi名称，还请包容</string>
+    <string name="开">开</string>
+    <string name="关">关</string>
+    <string name="刷新设备信息">刷新设备信息</string>
+    <string name="分享设备给朋友">分享设备给朋友</string>
+    <string name="接收朋友的分享">接收朋友的分享</string>
+    <string name="请输入分享码">请输入分享码</string>
+
+
+    <string name="请输入信息">请输入信息</string>
+    <string name="点击选择">点击选择</string>
+    <string name="设置">设置</string>
+    <string name="点击保存">点击保存</string>
+    <string name="长按这里删除">长按这里删除</string>
+
+    <string name="修改名字">修改名字</string>
+    <string name="历史数据">历史数据</string>
+    <string name="日志">日志</string>
+    <string name="删除设备">删除设备</string>
+    <string name="刷新">刷新</string>
+    <string name="ZuiDaRiQI">最大日期</string>
+    <string name="ZuiXiaoRiQi">最小日期</string>
+    <string name="选择模式">选择模式</string>
+    <string name="最小值">最小值</string>
+    <string name="最大值">最大值</string>
+
+
+</resources>

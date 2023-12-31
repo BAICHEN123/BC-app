@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#6200EE</color>
+    <color name="colorPrimaryDark">#3700B3</color>
+    <color name="colorAccent">#03DAC5</color>
+    <color name="SeekBar_Discrete">#33bAa5</color>
+    <color name="new_equipment_but">#629966</color>
+    <color name="warn">#ff0000</color>
+    <color name="灰底">#F5F5F5</color>
+    <color name="蓝灰底">#F0FFFF</color>
+    <color name="控制描边">#828986</color>
+    <color name="蓝底">#5bc8c7</color>
+    <color name="白底半透">#80ffffff</color>
+    <color name="button">#33a3a2</color>
+    <color name="透明">#000000ff</color>
+    <color name="灰色">#828986</color>
+    <color name="plus_sign_color">#525252</color>
+    <color name="黑色">#000000</color>
+    <color name="蛋黄">#CDC8B1</color>
+    <color name="蛋白">#EEE9E9</color>
+    <color name="defaut_background">#70BFC3</color>
+
+</resources>

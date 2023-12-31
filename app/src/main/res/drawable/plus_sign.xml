@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android"
+    >
+    <item
+        >
+        <shape android:shape="rectangle">
+            <solid android:color="@color/透明" />
+            <size android:height="200dp"
+                android:width="200dp"/>
+        </shape>
+    </item>
+    <item
+        android:right="90dp"
+        android:left="90dp"
+        >
+        <shape>
+            <solid android:color="@color/plus_sign_color" />
+        </shape>
+    </item>
+    <item
+        android:top="90dp"
+        android:bottom="90dp"
+        >
+        <shape>
+            <solid android:color="@color/plus_sign_color" />
+        </shape>
+    </item>
+
+</layer-list>

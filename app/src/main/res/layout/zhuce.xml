@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/defaut_background_color"
+        android:scaleType="center"
+        android:contentDescription="@string/登录界面背景"
+        />
+    <LinearLayout
+        android:id="@+id/zc_line1"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="100dp"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/bai_di_button"
+        >
+        <TextView
+            android:id="@+id/zc_text1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:text="@string/邮箱" />
+
+        <EditText
+            android:id="@+id/zc_edit1"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:inputType="textPersonName"
+            android:text=""
+            android:hint="@string/请输入邮箱"
+            />
+
+    </LinearLayout>
+    <Button
+        android:id="@+id/zc_button1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignRight="@+id/zc_line2"
+        android:layout_marginTop="10dp"
+        android:layout_below="@id/zc_line1"
+        android:onClick="zc_sendemail"
+        android:background="@drawable/lan_di_button"
+        android:text="@string/发送验证码"
+        />
+    <LinearLayout
+        android:id="@+id/zc_line2"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="10dp"
+        android:layout_below="@+id/zc_button1"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/bai_di_button"
+        >
+        <TextView
+            android:id="@+id/zc_text2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:text="@string/密码" />
+
+        <EditText
+            android:id="@+id/zc_edit2"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:inputType="textPassword"
+            android:text=""
+            android:hint="@string/请输入密码"
+            />
+
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/zc_line3"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="10dp"
+        android:layout_below="@+id/zc_line2"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/bai_di_button"
+        >
+        <TextView
+            android:id="@+id/zc_text3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:text="@string/密码" />
+
+        <EditText
+            android:id="@+id/zc_edit3"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:inputType="textPassword"
+            android:text=""
+            android:hint="@string/确认密码"
+            />
+
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/zc_line4"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="10dp"
+        android:layout_below="@+id/zc_line3"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/bai_di_button"
+        >
+        <TextView
+            android:id="@+id/zc_text4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:text="@string/邮箱验证码" />
+
+        <EditText
+            android:id="@+id/zc_edit4"
+            android:layout_width="140dp"
+            android:layout_height="wrap_content"
+            android:inputType="textPersonName"
+            android:text=""
+            android:hint="@string/请输入验证码"
+            />
+
+    </LinearLayout>
+    <Button
+        android:id="@+id/zc_button2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/lan_di_button"
+        android:layout_marginTop="20dp"
+        android:layout_below="@id/zc_line4"
+        android:onClick="zc_zhuce"
+        android:text="@string/注册"/>
+
+</RelativeLayout>

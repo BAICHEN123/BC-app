@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <!--
+        android:background="@color/new_equipment_but"-->
+
+    <Button
+        android:id="@+id/new_equipment_but"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/Button_view1"
+        android:layout_marginTop="@dimen/Button_view1"
+        android:background="@drawable/lan_di_button"
+        android:onClick="new_equipment"
+        android:text="@string/添加新设备"
+        android:textSize="@dimen/TextView" />
+
+    <Button
+        android:id="@+id/other_but1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/Button_view1"
+        android:layout_marginTop="@dimen/Button_view1"
+        android:background="@drawable/lan_di_button"
+        android:onClick="other_but1"
+        android:text="@string/我的信息"
+        android:textSize="@dimen/TextView" />
+
+    <Button
+        android:id="@+id/other_but4"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/Button_view1"
+        android:layout_marginTop="@dimen/Button_view1"
+        android:background="@drawable/lan_di_button"
+        android:onClick="pw_updata"
+        android:text="@string/修改密码"
+        android:textSize="@dimen/TextView" />
+
+    <Button
+        android:id="@+id/other_but2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/Button_view1"
+        android:layout_marginTop="@dimen/Button_view1"
+        android:background="@drawable/lan_di_button"
+        android:onClick="other_but2"
+        android:text="@string/切换账户"
+        android:textSize="@dimen/TextView" />
+
+    <Button
+        android:id="@+id/other_but3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/Button_view1"
+        android:layout_marginTop="@dimen/Button_view1"
+        android:onClick="other_but3"
+        android:text="@string/注销"
+        android:textColor="@color/warn"
+        android:textSize="@dimen/TextView" />
+
+</LinearLayout>

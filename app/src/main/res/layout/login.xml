@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/defaut_background_color"
+    >
+
+    <LinearLayout
+        android:id="@+id/yx_line1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_above="@+id/yx_line2"
+        android:background="@drawable/bai_di_button">
+
+        <TextView
+            android:id="@+id/log_text1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/邮箱"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/log_edit1"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bai_di_button"
+            android:hint="@string/点击选择"
+            android:text=""
+            android:autofillHints="user_email" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/yx_line2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_above="@+id/log_button1"
+        android:background="@drawable/bai_di_button"
+        android:layout_marginTop="20dp"
+        >
+    <TextView
+        android:id="@+id/log_text2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/密码"
+        android:textSize="20sp" />
+
+    <EditText
+        android:id="@+id/log_edit2"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bai_di_button"
+        android:hint="@string/请输入密码"
+        android:inputType="textPassword"
+        android:text=""
+        android:autofillHints="" />
+    </LinearLayout>
+    <Button
+        android:id="@+id/log_button1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:layout_marginTop="30dp"
+        android:background="@drawable/lan_di_button"
+        android:onClick="login_password"
+        android:textSize="16sp"
+        android:text="@string/登录" />
+
+    <Button
+        android:id="@+id/log_button2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="50dp"
+        android:background="@drawable/lan_di_button"
+        android:textSize="16sp"
+        android:onClick="zhuce"
+        android:text="@string/注册" />
+
+    <Button
+        android:id="@+id/log_button3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/log_button2"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/lan_di_button"
+        android:textSize="16sp"
+        android:onClick="log_youxiang"
+        android:text="@string/邮箱登录" />
+
+</RelativeLayout>

@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@drawable/item_background"
+    >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+
+        <TextView
+            android:id="@+id/ld_title_seekbar_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="4"
+            android:layout_gravity="start"
+            android:layout_marginStart="@dimen/start_margin"
+            android:textSize="@dimen/title_TextView" />
+
+        <TextView
+            android:id="@+id/ld_title_seekbar_fuhao"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:hint="@string/点击选择"
+            android:textSize="@dimen/title_TextView" />
+
+        <TextView
+            android:id="@+id/ld_title_seekbar_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="4"
+
+            android:gravity="end"
+            android:layout_marginEnd="@dimen/start_margin"
+            android:textSize="@dimen/title_TextView" />
+    </LinearLayout>
+    <!-- android:layout_marginHorizontal="@dimen/start_margin"
+        android:layout_marginTop="@dimen/equipment_data_item_margin_top"-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/equipment_data_item_margin_top"
+        android:orientation="horizontal"
+        >
+
+        <TextView
+            android:id="@+id/ld_title_seekbar_min"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="2"
+            android:gravity="end"
+            android:textSize="@dimen/seekbar_num" />
+
+        <SeekBar
+            android:id="@+id/ld_title_seekbar_seekbar"
+            style="@style/MySeekBsr"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_weight="18"
+            android:focusable="false" />
+
+        <TextView
+            android:id="@+id/ld_title_seekbar_max"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="2"
+            android:textSize="@dimen/seekbar_num" />
+
+
+    </LinearLayout>
+</LinearLayout>

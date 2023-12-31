@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+
+    android:background="@drawable/item_background"
+    >
+
+    <TextView
+        android:id="@+id/item_title_switch_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/start_margin"
+        android:textSize="@dimen/title_TextView" />
+
+    <Switch
+        android:id="@+id/item_title_switch_switch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="@dimen/start_margin"
+        android:textOff="@string/关"
+        android:textOn="@string/开"
+
+        />
+</RelativeLayout>

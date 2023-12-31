@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/defaut_background_color"
+        android:contentDescription="@string/修改信息界面背景"
+        android:scaleType="center" />
+
+    <ImageView
+        android:id="@+id/setdata_image"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_centerHorizontal="true"
+        android:contentDescription="@string/选择头像图片"
+        android:scaleType="centerCrop" />
+
+    <Button
+        android:id="@+id/set_image_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/setdata_image"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/bai_di_button"
+        android:onClick="get_image"
+        android:text="@string/选择头像图片" />
+
+    <LinearLayout
+        android:id="@+id/set_line1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/set_image_button"
+        android:background="@drawable/bai_di_button"
+        android:layout_marginTop="10dp"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/set_line2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="4"
+                android:text="@string/昵称"
+                android:textSize="20sp" />
+
+            <EditText
+                android:id="@+id/setdata_name"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:gravity="end"
+                android:hint="@string/昵称"
+                android:textSize="20sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="4"
+                android:text="@string/邮箱"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/setdata_email"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:gravity="end"
+                android:hint="@string/邮箱不可修改"
+                android:textSize="20sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="25dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="4"
+                android:text="@string/性别"
+                android:textSize="20sp" />
+
+            <RadioGroup
+                android:id="@+id/radio1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="8"
+                android:gravity="end"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:id="@+id/radioButton1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/男" />
+
+                <RadioButton
+                    android:id="@+id/radioButton2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="48dp"
+                    android:text="@string/女" />
+
+            </RadioGroup>
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/set_line1"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="30dp">
+
+        <Button
+            android:layout_width="100dp"
+            android:layout_height="45dp"
+            android:layout_gravity="center_horizontal"
+            android:background="@drawable/bai_di_button"
+            android:onClick="setdata_save"
+            android:text="@string/保存" />
+
+        <Button
+            android:layout_width="100dp"
+            android:layout_height="45dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginStart="40dp"
+            android:background="@drawable/bai_di_button"
+            android:onClick="setdata_exit"
+            android:text="@string/取消" />
+    </LinearLayout>
+</RelativeLayout>

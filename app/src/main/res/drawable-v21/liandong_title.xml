@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ripple xmlns:android="http://schemas.android.com/apk/res/android"
+    android:color="@color/蛋白"
+    >
+    <!--显示默认的 drawable-->
+    <item>
+        <shape
+            android:shape="rectangle">
+
+            <corners android:radius="20dp" />
+            <solid android:color="@color/蛋黄" />
+        </shape>
+    </item>
+</ripple>

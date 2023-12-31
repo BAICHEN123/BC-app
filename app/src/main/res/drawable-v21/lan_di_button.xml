@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ripple xmlns:android="http://schemas.android.com/apk/res/android"
+    android:color="@color/蛋白">
+    <!--显示默认的 drawable-->
+    <item>
+        <shape android:shape="rectangle">
+
+            <corners android:radius="15dp" />
+            <solid android:color="@color/button" />
+            <padding
+                android:bottom="7dp"
+                android:left="5dp"
+                android:right="5dp"
+                android:top="7dp" />
+        </shape>
+    </item>
+</ripple>

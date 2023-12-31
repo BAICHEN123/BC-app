@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Mywifi</string>
+    <string name="window1">Huhuhu%1$d</string>
+    <string name="登录">Log In</string>
+    <string name="注册">Sign Up</string>
+    <string name="昵称">Nickname:</string>
+    <string name="邮箱">Email:</string>
+    <string name="密码">Password:</string>
+    <string name="性别">Gender:</string>
+    <string name="保存">Save</string>
+    <string name="取消">Cancel</string>
+    <string name="名字">Name:</string>
+
+    <string name="新闻">News</string>
+    <string name="订阅">Subscribe</string>
+    <string name="图片">Images</string>
+    <string name="其他">Other</string>
+    <string name="注销">Log out</string>
+    <string name="切换账户">Switch Account</string>
+    <string name="修改密码">Change Password</string>
+    <string name="我的信息">My Information</string>
+
+    <string name="首页标题">Home Title</string>
+    <string name="发送验证码">Send Verification Code</string>
+    <string name="请输入邮箱">Please enter your email</string>
+    <string name="请输入设备名字">Please enter device name</string>
+    <string name="验证码">Verification Code:</string>
+    <string name="请输入验证码">Please enter verification code</string>
+    <string name="确认密码">Confirm Password</string>
+    <string name="邮箱验证码">Email Verification Code:</string>
+    <string name="请输入密码">Please enter password</string>
+    <string name="邮箱登录">Email Login</string>
+    <string name="编辑">Edit</string>
+    <string name="选择头像图片">Select Avatar Image</string>
+    <string name="头像图片">Avatar Image</string>
+    <string name="新闻图片">News Image</string>
+    <string name="邮箱不可修改">Email cannot be modified</string>
+    <string name="男">Male</string>
+    <string name="女">Female</string>
+    <string name="登录界面背景">Login Screen Background</string>
+    <string name="用户信息界面背景">User Information Screen Background</string>
+    <string name="修改信息界面背景">Modify Information Screen Background</string>
+    <string name="邮箱登录背景">Email Login Background</string>
+    <string name="添加新设备">Add New Device</string>
+    <string name="请输入与设备共享的WiFi名">Please enter WiFi name shared with the device</string>
+    <string name="WiFi密码">WiFi Password</string>
+    <string name="发送">Send</string>
+    <string name="设备连接WiFi提醒">Note: Node devices currently support WiFi names composed of letters, numbers, and some symbols. Please be understanding.</string>
+    <string name="开">On</string>
+    <string name="关">Off</string>
+    <string name="刷新设备信息">Refresh Device Information</string>
+    <string name="分享设备给朋友">Share Device with Friends</string>
+    <string name="接收朋友的分享">Receive Friends\' Shares</string>
+    <string name="请输入分享码">Please enter the sharing code</string>
+
+    <string name="请输入信息">Please enter information</string>
+    <string name="点击选择">Click to select</string>
+    <string name="设置">Settings</string>
+    <string name="点击保存">Click to save</string>
+    <string name="长按这里删除">Long press here to delete</string>
+
+    <string name="修改名字">Modify Name</string>
+    <string name="历史数据">Historical Data</string>
+    <string name="日志">Log</string>
+    <string name="删除设备">Delete Device</string>
+    <string name="刷新">Refresh</string>
+    <string name="ZuiDaRiQI">Maximum Date</string>
+    <string name="ZuiXiaoRiQi">Minimum Date</string>
+    <string name="选择模式">Select Mode</string>
+    <string name="最小值">Minimum Value</string>
+    <string name="最大值">Maximum Value</string>
+</resources>

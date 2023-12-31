@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/蓝底"
+        android:contentDescription="@string/登录界面背景"
+        android:scaleType="center" />
+
+    <LinearLayout
+        android:id="@+id/yx_line2"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerHorizontal="true"
+        android:orientation="vertical"
+        android:layout_margin="@dimen/equipment_data_item_margin_top">
+
+        <Button
+            android:id="@+id/button_rename"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/equipment_data_item_margin_top"
+            android:layout_marginTop="@dimen/Button_view1"
+            android:background="@drawable/lan_di_button"
+            android:text="@string/修改名字"
+            android:onClick="button_rename_equipment"
+            android:textSize="16sp" />
+
+        <Button
+            android:id="@+id/button_show_old_date"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/equipment_data_item_margin_top"
+            android:layout_marginTop="@dimen/Button_view1"
+            android:background="@drawable/lan_di_button"
+            android:text="@string/历史数据"
+            android:onClick="button_show_old_date_equipment"
+            android:textSize="16sp" />
+
+        <Button
+            android:id="@+id/button_log_equipment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/equipment_data_item_margin_top"
+            android:layout_marginTop="@dimen/Button_view1"
+            android:background="@drawable/lan_di_button"
+            android:text="@string/日志"
+            android:onClick="button_log_equipment"
+            android:textSize="16sp" />
+        <Button
+            android:id="@+id/button_delete_equipment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/equipment_data_item_margin_top"
+            android:layout_marginTop="@dimen/Button_view1"
+            android:text="@string/删除设备"
+            android:textColor="@color/warn"
+            android:onClick="button_delete_equipment"
+            android:textSize="16sp" />
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

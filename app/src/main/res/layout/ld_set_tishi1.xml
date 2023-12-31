@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/ld_set_tishi1_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/title_TextView"
+        android:background="@drawable/text_line_background"
+        android:gravity="center"
+        android:textColor="@color/黑色"
+        android:textSize="@dimen/title_TextView" />
+</LinearLayout>

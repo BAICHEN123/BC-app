@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?><!--显示默认的 drawable-->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+
+    <corners android:radius="20dp" />
+    <solid android:color="@color/蓝底" />
+</shape>

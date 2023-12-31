@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/蓝底"
+        android:contentDescription="@string/登录界面背景"
+        android:scaleType="center" />
+
+    <LinearLayout
+        android:id="@+id/yx_line1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="@dimen/equipment_data_item_margin_top"
+        android:background="@drawable/bai_di_button">
+
+        <TextView
+            android:id="@+id/title_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/名字"
+            android:textSize="20sp" />
+
+        <EditText
+            android:id="@+id/name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bai_di_button"
+            android:hint="@string/请输入设备名字"
+            android:inputType="textPersonName"
+            android:text="" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/yx_line2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/yx_line1"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="@dimen/equipment_data_item_margin_top">
+
+        <Button
+            android:id="@+id/button1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/equipment_data_item_margin_top"
+            android:background="@drawable/lan_di_button"
+            android:text="@string/保存"
+            android:textSize="16sp" />
+
+        <Button
+            android:id="@+id/button2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/equipment_data_item_margin_top"
+            android:background="@drawable/lan_di_button"
+            android:text="@string/取消"
+            android:textSize="16sp" />
+
+    </LinearLayout>
+
+
+</RelativeLayout>

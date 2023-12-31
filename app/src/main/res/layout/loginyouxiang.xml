@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/defaut_background_color"
+    >
+
+
+    <LinearLayout
+        android:id="@+id/yx_line1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="200dp"
+        android:background="@drawable/bai_di_button"
+        >
+
+        <TextView
+            android:id="@+id/log_text1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/邮箱"
+            android:textColor="#000000"
+            android:textSize="20sp" />
+
+        <EditText
+            android:id="@+id/log_edit1"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bai_di_button"
+            android:hint="@string/请输入邮箱"
+            android:inputType="textPersonName"
+            android:autofillHints="user_email" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/yx_line2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/yx_line1"
+        android:layout_alignEnd="@+id/yx_line1"
+        android:layout_marginTop="20dp"
+        >
+
+        <Button
+            android:id="@+id/log_button2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/lan_di_button"
+            android:onClick="yx_send"
+            android:text="@string/发送验证码" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/yx_line3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/yx_line2"
+        android:background="@drawable/bai_di_button"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        >
+
+        <TextView
+            android:id="@+id/log_text2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/验证码"
+            android:textColor="#000000"
+            android:textSize="20sp" />
+
+        <EditText
+            android:id="@+id/log_edit2"
+            android:layout_width="170dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bai_di_button"
+            android:hint="@string/请输入验证码"
+            android:inputType="textPersonName"
+            android:text=""
+            android:autofillHints="" />
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/log_button1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:layout_below="@+id/yx_line3"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/lan_di_button"
+        android:onClick="yx_login"
+        android:text="@string/登录" />
+
+    <Button
+        android:id="@+id/log_yx_button2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/log_button1"
+        android:background="@drawable/lan_di_button"
+        android:textSize="16sp"
+        android:onClick="zhuce"
+        android:text="@string/注册" />
+
+</RelativeLayout>

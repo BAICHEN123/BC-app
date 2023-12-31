@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <dimen name="fab_margin">20dp</dimen>
+    <dimen name="item_margin">20dp</dimen>
+    <dimen name="start_margin">20dp</dimen>
+    <dimen name="TextView">17sp</dimen>
+    <dimen name="title_TextView">20sp</dimen>
+    <dimen name="Button_view1">10dp</dimen>
+    <dimen name="equipment_data_item_margin_top">10dp</dimen>
+    <dimen name="equipment_data_item_margin_bottom">0dp</dimen>
+    <dimen name="text_bottom">20dp</dimen>
+    <dimen name="number_name">20dp</dimen>
+    <dimen name="start_number">10dp</dimen>
+    <dimen name="share_chiose_text_hiugh">50dp</dimen>
+    <dimen name="seekbar_num">15sp</dimen>
+</resources>

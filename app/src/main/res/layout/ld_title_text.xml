@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:background="@drawable/text_line_background"
+    >
+
+<!--
+    android:layout_marginTop="@dimen/item_margin"-->
+    <TextView
+        android:id="@+id/ld_title_text_name"
+        android:layout_marginStart="@dimen/start_margin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="4"
+        android:textSize="@dimen/title_TextView" />
+
+    <TextView
+        android:id="@+id/ld_title_text_fuhao"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:hint="@string/点击选择"
+        android:textSize="@dimen/title_TextView"/>
+
+
+    <EditText
+        android:id="@+id/ld_title_text_data"
+        android:layout_marginEnd="@dimen/start_margin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="4"
+        android:gravity="end"
+        android:textSize="@dimen/title_TextView" />
+</LinearLayout>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    >
+    <Button
+        android:id="@+id/for_friends"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/Button_view1"
+        android:layout_marginHorizontal="@dimen/Button_view1"
+        android:textSize="@dimen/TextView"
+        android:background="@drawable/lan_di_button"
+        android:text="@string/分享设备给朋友"
+        />
+    <Button
+        android:id="@+id/get_friends"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/Button_view1"
+        android:layout_marginHorizontal="@dimen/Button_view1"
+        android:textSize="@dimen/TextView"
+        android:background="@drawable/lan_di_button"
+        android:text="@string/接收朋友的分享"
+        />
+</LinearLayout>
