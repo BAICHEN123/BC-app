@@ -49,7 +49,8 @@ public class SetWifi
 					Log.i("TAG", "connect_wifi: " + a.getSsid());
 				}
 			}
-			final WifiNetworkSuggestion suggestion2 = new WifiNetworkSuggestion.Builder().setSsid(ssid).setWpa2Passphrase(password).setIsAppInteractionRequired(false).build();
+			final WifiNetworkSuggestion suggestion2 =
+					new WifiNetworkSuggestion.Builder().setSsid(ssid).setWpa2Passphrase(password).setIsAppInteractionRequired(false).build();
 			//final WifiNetworkSuggestion suggestion3 = new WifiNetworkSuggestion.Builder().setSsid("HCC_APP").setWpa3Passphrase("12345678").setIsAppInteractionRequired(false).build();
 			final List<WifiNetworkSuggestion> suggestionsList = new ArrayList<>();
 			suggestionsList.add(suggestion2);
@@ -162,6 +163,12 @@ public class SetWifi
 			case WifiManager.WIFI_STATE_ENABLED:
 				//Log.i("TAG", "GetWifi_button_ok1: WiFi已经完全开启的状态");
 
+				if (ActivityCompat.checkSelfPermission(this.context,
+													   Manifest.permission.ACCESS_FINE_LOCATION
+				) != PackageManager.PERMISSION_GRANTED)
+				{
+					return false;
+				}
 				wifi_list = wifimanager.getScanResults();//获取扫描到的wifi名字
 				for (int i = 0; i < wifi_list.size(); i++)
 				{
@@ -169,7 +176,7 @@ public class SetWifi
 				}
 
 				return true;
-				//break;
+			//break;
 
 		}
 		return false;
@@ -177,8 +184,14 @@ public class SetWifi
 
 	public boolean wifi_exist(String ssid)
 	{
-		if(WiFi_start())
+		if (WiFi_start())
 		{
+			if (ActivityCompat.checkSelfPermission(this.context,
+												   Manifest.permission.ACCESS_FINE_LOCATION
+			) != PackageManager.PERMISSION_GRANTED)
+			{
+				return false;
+			}
 			wifi_list = wifimanager.getScanResults();//获取扫描wifi
 			//wifi_list.get(i).SSID//wifi的名字
 			for (int i = 0; i < wifi_list.size(); i++)
