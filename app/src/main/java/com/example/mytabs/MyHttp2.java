@@ -36,7 +36,7 @@ public class MyHttp2
 	{
 		byte[] bytes = MyKeyer.keyer_get_bytes(post_data, key);
 		assert bytes != null;
-		bytes = myHttp.send_Post_bytes(MyHttp.IP + net_url + "=" + path_fig, bytes);
+		bytes = myHttp.send_Post_bytes(MyHttp.getServerHttp() + net_url + "=" + path_fig, bytes);
 		if (bytes == null)
 		{
 			msg.what = MyHttp_ERROR;
@@ -52,7 +52,7 @@ public class MyHttp2
 		Message msg = new Message();
 		msg.what = fig;
 
-		bytes = myHttp.send_Post_bytes(MyHttp.IP + net_url + "=" + path_fig, bytes);
+		bytes = myHttp.send_Post_bytes(MyHttp.getServerHttp() + net_url + "=" + path_fig, bytes);
 		//Log.e("TAG", "post_str: " + new String(bytes));
 		if (bytes == null)
 		{

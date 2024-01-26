@@ -8,9 +8,11 @@
     <string name="邮箱">邮  箱：</string>
     <string name="密码">密  码：</string>
     <string name="性别">性  别：</string>
+    <string name="名字">名  字：</string>
+
     <string name="保存">保  存</string>
     <string name="取消">取  消</string>
-    <string name="名字">名  字：</string>
+    <string name="确认">确  认</string>
 
     <string name="新闻">新闻</string>
     <string name="订阅">订阅</string>
@@ -71,6 +73,9 @@
     <string name="选择模式">选择模式</string>
     <string name="最小值">最小值</string>
     <string name="最大值">最大值</string>
+    <string name="这个吗">这个吗？</string>
+    <string name="defaut_server">121.89.243.207:8080</string>
+    <string name="切换服务器">切换服务器</string>
 
 
 </resources>

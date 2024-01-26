@@ -189,9 +189,11 @@ public class AddLD extends Activity
 				case 0:
 					if (convertView != null && convertView.getId() == ID_tishi1)
 					{
-						return convertView;
+						view = convertView;
+//						return convertView;
+					}else{
+						view = inflate(this.context, R.layout.ld_set_tishi1, null);
 					}
-					view = inflate(this.context, R.layout.ld_set_tishi1, null);
 					textview_info = view.findViewById(R.id.ld_set_tishi1_text);
 					textview_info.setText("当 [" + get_id_name(aLdData.feid) + "] 条件成立时");
 					view.setId(ID_tishi1);
@@ -202,9 +204,11 @@ public class AddLD extends Activity
 				case 2:
 					if (convertView != null && convertView.getId() == ID_tishi2)
 					{
-						return convertView;
+						view = convertView;
+//						return convertView;
+					}else{
+						view = inflate(this.context, R.layout.ld_set_tishi1, null);
 					}
-					view = inflate(this.context, R.layout.ld_set_tishi1, null);
 					textview_info = view.findViewById(R.id.ld_set_tishi1_text);
 					textview_info.setText("[" + get_id_name(aLdData.geid) + "] 执行下面操作");
 					view.setId(ID_tishi2);
@@ -213,11 +217,15 @@ public class AddLD extends Activity
 					view = aLdData.jitem.get_ld_set_view(aLdData.jitem, context, EquipmentDataItem.ITEM_IS_DO, aLdData, convertView);
 					return view;
 				case 4:
+					Button but;
 					if (convertView != null && convertView.getId() == ID_qurenjian)
 					{
-						return convertView;
+						but = (Button)convertView;
+//						return convertView;
 					}
-					Button but = new Button(this.context);
+					else{
+						but = new Button(this.context);
+					}
 					but.setText("确定");
 					but.setOnClickListener(new View.OnClickListener()
 					{

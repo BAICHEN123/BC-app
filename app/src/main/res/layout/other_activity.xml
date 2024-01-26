@@ -52,6 +52,17 @@
         android:textSize="@dimen/TextView" />
 
     <Button
+        android:id="@+id/other_button_select_server"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/Button_view1"
+        android:layout_marginTop="@dimen/Button_view1"
+        android:background="@drawable/lan_di_button"
+        android:text="@string/切换服务器"
+        android:onClick="other_button_select_server"
+        android:textSize="@dimen/TextView" />
+
+    <Button
         android:id="@+id/other_but3"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

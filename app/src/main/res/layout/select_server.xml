@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/蓝底"
+        android:contentDescription="@string/登录界面背景"
+        android:scaleType="center" />
+
+    <LinearLayout
+        android:id="@+id/yx_line1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="@dimen/equipment_data_item_margin_top"
+        android:background="@drawable/bai_di_button">
+
+        <Button
+            android:minWidth="@dimen/button_minwidth"
+            android:id="@+id/button_http_s"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/lan_di_button"
+            android:textAllCaps="false"
+            android:text="http://"
+            android:textSize="20sp"
+            tools:ignore="HardcodedText" />
+
+        <EditText
+            android:id="@+id/name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bai_di_button"
+            android:hint="@string/defaut_server"
+            tools:ignore="HardcodedText" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/yx_line2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/yx_line1"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="@dimen/equipment_data_item_margin_top">
+
+        <Button
+            android:id="@+id/button_save"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/equipment_data_item_margin_top"
+            android:minWidth="@dimen/button_minwidth"
+            android:background="@drawable/lan_di_button"
+            android:text="@string/保存"
+            android:textSize="16sp" />
+
+        <Button
+            android:id="@+id/button_quit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minWidth="@dimen/button_minwidth"
+            android:layout_margin="@dimen/equipment_data_item_margin_top"
+            android:background="@drawable/lan_di_button"
+            android:text="@string/取消"
+            android:textSize="16sp" />
+
+    </LinearLayout>
+</RelativeLayout>

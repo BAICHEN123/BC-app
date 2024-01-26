@@ -229,7 +229,7 @@ public class LoginYouXiang extends Activity
 		{
 			//拼接url，发送请求
 
-			new MyHttp().thread_send_Post_String(MyHttp.IP + "email_send_login", "email=" + userdata.email, handler_send, MyHttp2.MyOk);
+			new MyHttp().thread_send_Post_String(MyHttp.getServerHttp() + "email_send_login", "email=" + userdata.email, handler_send, MyHttp2.MyOk);
 
 			new Thread()//延时使能按键
 			{

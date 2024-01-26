@@ -13,7 +13,7 @@
         android:layout_marginStart="@dimen/start_margin"
         android:textSize="@dimen/title_TextView" />
 
-    <Switch
+    <com.google.android.material.switchmaterial.SwitchMaterial
         android:id="@+id/item_title_switch_switch"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

@@ -222,7 +222,7 @@ public class ZhuCe extends Activity
 		if (send_time_key && JaoYan.jy_email(userdata.email))
 		{
 			//拼接url，发送请求
-			new MyHttp().thread_send_Post_String(MyHttp.IP + "email_send_zhuce", "email=" + userdata.email, handler1, CHANGE_UI);
+			new MyHttp().thread_send_Post_String(MyHttp.getServerHttp() + "email_send_zhuce", "email=" + userdata.email, handler1, CHANGE_UI);
 			//延时使能按键
 			new Thread()
 			{
@@ -334,7 +334,8 @@ public class ZhuCe extends Activity
 			dict.put("email",userdata.email);
 			dict.put("password1",userdata.password);
 			dict.put("password2",user_password);
-			new MyHttp().thread_send_post_bytes(MyHttp.IP + "email_log_zhuce" + MyKeyer.MyMd5(userdata.email), MyKeyer.keyer_get_bytes(MyJson.toJson(dict), user_password), handler2, CHANGE_UI);
+			new MyHttp().thread_send_post_bytes(
+					MyHttp.getServerHttp() + "email_log_zhuce" + MyKeyer.MyMd5(userdata.email), MyKeyer.keyer_get_bytes(MyJson.toJson(dict), user_password), handler2, CHANGE_UI);
 			jx_password = user_password;
 			thread_post_key = false;
 		}

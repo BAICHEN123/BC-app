@@ -100,7 +100,8 @@ public class LogData extends Activity
 			{
 				//e.printStackTrace();
 				Log.i("TAG", "onActivityResult: 用户头像本地加载失败" + e.getMessage());
-				new MyHttp().thread_send_get__bytes(MyHttp.IP + "user_head" + userdata.user_head[0] + "." + userdata.user_head[1], handler_head, CHANGE_UI);
+				new MyHttp().thread_send_get__bytes(
+						MyHttp.getServerHttp() + "user_head" + userdata.user_head[0] + "." + userdata.user_head[1], handler_head, CHANGE_UI);
 
 			}
 		}

@@ -70,4 +70,8 @@
     <string name="选择模式">Select Mode</string>
     <string name="最小值">Minimum Value</string>
     <string name="最大值">Maximum Value</string>
+    <string name="这个吗">This one? </string>
+    <string name="确认">Yes</string>
+    <string name="defaut_server">121.89.243.207:8080</string>
+    <string name="切换服务器">Switching server</string>
 </resources>

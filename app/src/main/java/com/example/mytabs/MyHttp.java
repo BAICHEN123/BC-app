@@ -21,16 +21,22 @@ public class MyHttp
 	public static final int TIMEOUT=5000;//http网络请求超时时间
 
 //	static final String IP = "http://192.168.31.28:8080/";
-	static final String IP = "http://121.89.243.207:8080/";
-	//static final String IP = "http://192.168.137.5:8080/";
-	//static final String IP = "http://192.168.0.102:8080/";
-	//static final String IP = "http://10.120.52.165:8080/";
+	private static String SERVER_HTTP = "http://121.89.243.207:8080/";
+
+	public static String getServerHttp()
+	{
+		return SERVER_HTTP;
+	}
+
+	public static void setServerHttp(String serverHttp)
+	{
+		SERVER_HTTP = serverHttp;
+	}
 	//private static
 	//加个线程锁，防止数量过多
 
 	//错误码全部返回-1 ERROR
 	//设置成功码可选
-
 	public void thread_send_Post_String(final String net_url, final String post_data, final Handler handler, final int CHANGE_UI)
 	{
 		new Thread()

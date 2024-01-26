@@ -11,7 +11,6 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.provider.MediaStore;
@@ -298,7 +297,8 @@ public class SetData extends Activity
 							Toast.makeText(SetData.this, "头像文件读取出错，无法上传至服务器", Toast.LENGTH_SHORT).show();
 							return;
 						}
-						new MyHttp().thread_send_Post_String(MyHttp.IP + "pic=" + userdata.user_head[0] + "." + userdata.user_head[1], buffer, handler_update_pic, CHANGE_UI);
+						new MyHttp().thread_send_Post_String(
+								MyHttp.getServerHttp() + "pic=" + userdata.user_head[0] + "." + userdata.user_head[1], buffer, handler_update_pic, CHANGE_UI);
 
 					}
 				}.start();

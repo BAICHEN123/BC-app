@@ -42,6 +42,7 @@
         <activity android:name=".AddLD" />
         <activity android:name=".PwUpdata" />
         <activity android:name=".EquipmentInfoActivity" />
+        <activity android:name=".SelectServerActivity" />
     </application>
 
 </manifest>

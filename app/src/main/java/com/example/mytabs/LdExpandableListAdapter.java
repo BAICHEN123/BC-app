@@ -255,7 +255,7 @@ public class LdExpandableListAdapter extends BaseExpandableListAdapter
 										//Log.e("TAG", "onClick: ", );
 									}
 								})
-								.setNegativeButton("取消", null)
+								.setNegativeButton(context.getString(R.string.取消), null)
 								.show();
 						return true;
 					}

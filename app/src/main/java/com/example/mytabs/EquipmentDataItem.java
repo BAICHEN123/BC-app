@@ -22,6 +22,8 @@ import java.util.regex.Pattern;
 
 import static android.view.View.inflate;
 
+import com.google.android.material.switchmaterial.SwitchMaterial;
+
 public class EquipmentDataItem
 {
 	//ht_  开头的函数，表示主要是给滑条调用的
@@ -512,7 +514,7 @@ public class EquipmentDataItem
 					view = inflate(context, R.layout.item_title_switch, null);
 					view.setId(VIEW_ID_SET_1);
 				}
-				Switch switch1 = view.findViewById(R.id.item_title_switch_switch);
+				SwitchMaterial switch1 = view.findViewById(R.id.item_title_switch_switch);
 				TextView textView1 = view.findViewById(R.id.item_title_switch_title);
 				textView1.setText(itemdata.item_name);
 				switch1.setChecked(itemdata.get_now() == 1);

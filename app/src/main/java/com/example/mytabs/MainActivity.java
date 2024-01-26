@@ -21,7 +21,6 @@ import android.widget.Button;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.SeekBar;
-import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -34,11 +33,11 @@ import androidx.core.content.ContextCompat;
 import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
+import com.google.android.material.switchmaterial.SwitchMaterial;
 import com.google.android.material.tabs.TabLayout;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Objects;
 
 
 
@@ -86,6 +85,7 @@ public class MainActivity extends AppCompatActivity
 	static final int FIG_ADD_LD_ = 7;//设备分享页面
 	static final int FIG_OPEN_WIFI_ = 8;//设置页面打开wifi
 	static final int FIG_E_CLICK_NAME_VIEW_ = 9;//点击设备名字出来的页面
+	static final int FIG_SELCT_SERVER_PAGE_ = 10;//点击设备名字出来的页面
 
 
 	UserData userdata;
@@ -93,173 +93,147 @@ public class MainActivity extends AppCompatActivity
 	ExpandableListView ldexpandableListView;
 	MyExpandableListAdapter myExpandableListAdapter;//https://www.jianshu.com/p/05df9c17a1d8
 	LdExpandableListAdapter ldadapter;
-	View other_view;
-	View liandong_view;
-	MySqlLite sql;
-	MyPagerAdapter myPagerAdapter;
-	MyFloatingActionButton fab;
-	ArrayList<ALdData> lddatas;
-
-	//protected static final int CHANGE_UI = 0, ERROR = -1;
-	@SuppressLint("Recycle")
-	@Override
-	protected void onCreate(Bundle savedInstanceState)
+	private final Handler hander_3 = new Handler(Looper.getMainLooper())//负责处理按键里的线程
 	{
-		//textView.setText(getResources().getString(R.string.window1));
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_main);
-
-		//给左右滑动页面嵌套列表视图，实现下拉刷新。
-		//标签页面的页面的数据视图转换工具类
-		myPagerAdapter = new MyPagerAdapter();
-		//viewPager标签页面 的设置
-		View view;
-
-		//设备页面占位
-		view = inflate(MainActivity.this, R.layout.equipment_list, null);
-		expandableListView = view.findViewById(R.id.equipment_list_ExpandableListView);
-
-		//填充数据
-		myExpandableListAdapter = new MyExpandableListAdapter(MainActivity.this);
-		expandableListView.setAdapter(myExpandableListAdapter);
-		myPagerAdapter.viewLists.add(view);
-
-		lddatas = new ArrayList<>();
-		ldadapter = new LdExpandableListAdapter(MainActivity.this, lddatas, myExpandableListAdapter.myEquipments);
-		//关于这里有个很扯的错误，用 getApplicationContext() 获取的 context 无法正常构建弹出窗口
-
-
-		//联动页面的添加，注意，要按顺序
-		liandong_view = inflate(MainActivity.this, R.layout.equipment_list, null);
-		ldexpandableListView = liandong_view.findViewById(R.id.equipment_list_ExpandableListView);
-		ldexpandableListView.setAdapter(ldadapter);
-		myPagerAdapter.viewLists.add(liandong_view);
-
-		//用户页面占位
-		other_view = inflate(MainActivity.this, R.layout.other_activity, null);
-		myPagerAdapter.viewLists.add(other_view);
-
-
-		//标签页面的页面
-		ViewPager viewPager = findViewById(R.id.view_pager);
-		viewPager.setAdapter(myPagerAdapter);
-
-		//标签页面的标签
-		TabLayout tabs = findViewById(R.id.tabs);
-		tabs.setupWithViewPager(viewPager);
-		Log.i("TAG", "onCreate:mainActivity fab 0");
-		Point point = new Point();
-		getWindowManager().getDefaultDisplay().getSize(point);
-//		Log.i("TAG", "onTouchEvent: point.getWidth  " + point.x);
-//		Log.i("TAG", "onTouchEvent: point.getHeight  " + point.y);
-//		Log.i("TAG", "onTouchEvent: expandableListView.getWidth  " + other_view.getWidth());
-//		Log.i("TAG", "onTouchEvent: expandableListView.getHeight  " + other_view.getHeight());
-
-		fab = findViewById(R.id.fab);
-		fab.setMAX(point.x, point.y);//限制可移动的范围
-		final GuidePageChangeListener onTabSelectedListener = new GuidePageChangeListener(fab);
-		tabs.addOnTabSelectedListener(onTabSelectedListener);
-		//从本地数据库查询用户登录信息
-		Log.i("TAG", "onCreate:mainActivity数据库 1");
-
-
-		userdata = null;
-		sql = new MySqlLite(getApplicationContext());
-		userdata = sql.get_login_data();
-		if (userdata == null || userdata.email == null || userdata.email.equals(""))
+		public void handleMessage(Message msg)
 		{
-			//查询数据库，没有用户登录过
-			Toast.makeText(MainActivity.this, "没有用户登录", Toast.LENGTH_SHORT).show();
-			Intent intent;
-			intent = new Intent(MainActivity.this, Login.class);
-			Log.i("TAG", "onCreate:mainActivity数据库6");
-			startActivityForResult(intent, FIG_USER_LOGIN_);//打开登陆界面
-		}
-		else
-		{
-			Log.i("TAG", "onCreate: mainActivity数据库7" + userdata.get_str_data());
-			//查询到最后一次登录的用户名
-			//userdata = sql.get_login_data();
-			Log.i("TAG", "onCreate: mainActivity数据库8 用户本地信息加载完毕" + userdata.get_str_data());
-			//Toast.makeText(MainActivity.this, "用户本地信息加载完毕", Toast.LENGTH_SHORT).show();
-			new MyHttp2(userdata).thread_post_do_data("get_my_equipment", userdata.get_str_data(), userdata.net_md5, hander_1);
-			new MyHttp2(userdata).thread_post_do_data("ld_select", userdata.get_str_data(), userdata.net_md5, ldadapter.hander_ld);
+			if (msg.what == MyHttp2.MyHttp_ERROR)
+			{
+				Log.e("TAG", "handleMessage: MyHttp error");
+				Toast.makeText(getApplicationContext(), "网络异常", Toast.LENGTH_SHORT).show();
+				//在这里重新发送请求 ？
+			}
+			else if (msg.what == MyHttp2.MyKeyer_ERROR)
+			{
+				Log.e("TAG", "handleMessage: MyHttp error");
+				Toast.makeText(getApplicationContext(), "解析数据错误，请重新登录",
+							   Toast.LENGTH_SHORT
+				).show();
 
-			Log.i("TAG", "onCreate: mainActivity数据库9数据库完毕" + userdata.get_str_data());
+			}
+			else
+			{
+				//msg.what 是视图的编号，从0开始
+				String str_data = (String) msg.obj;
+				Log.e("TAG", "handleMessage: MyHttp ok\n" + str_data);
+				final int end = JaoYan.get_end_id(str_data);
+				final String log = JaoYan.get_log_id(str_data);
+				if (end > 0 && log != null)
+				{
+					Toast.makeText(MainActivity.this, log, Toast.LENGTH_SHORT).show();
+					//info允许为空
+					//我随意填充点儿数据，防止他一直进行info请求
+					myExpandableListAdapter.myEquipments.get(msg.what).set_info_isnull();
+				}
+				else if (end == 0 && log != null)
+				{
+					if ("SET error 2 越权".equals(log))
+					{
+						Toast.makeText(MainActivity.this, "未查询到您绑定的设备",
+									   Toast.LENGTH_SHORT
+						).show();
+						myExpandableListAdapter.myEquipments.clear();
+					}
+					else
+					{
+						myExpandableListAdapter.myEquipments.get(msg.what).addInfo_(log);
+					}
+					myExpandableListAdapter.notifyDataSetChanged();
+					ldadapter.notifyDataSetChanged();
+				}
+				else
+				{
+					Toast.makeText(MainActivity.this, "服务器返回了不认识的数据emmmm",
+								   Toast.LENGTH_SHORT
+					).show();
+					Log.i("TAG", "handleMessage: 服务器返回了不认识的数据emmmm   " + str_data);
+				}
+			}
 		}
 
+	};
+	private final Handler hander_2 = new Handler(Looper.getMainLooper())//负责处理按键里的线程
+	{
+		public void handleMessage(Message msg)
+		{
+			if (msg.what == MyHttp2.MyHttp_ERROR)
+			{
+				Log.e("TAG", "handleMessage: MyHttp error");
+				Toast.makeText(getApplicationContext(), "网络异常", Toast.LENGTH_SHORT).show();
+				//在这里重新发送请求 ？
+			}
+			else if (msg.what == MyHttp2.MyKeyer_ERROR)
+			{
+				Log.e("TAG", "handleMessage: MyHttp error");
+				Toast.makeText(getApplicationContext(), "解析数据错误，请重新登录",
+							   Toast.LENGTH_SHORT
+				).show();
 
-		//右下角的图标
-		fab.setOnClickListener(view1 ->
-							   {
-								   //Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG).setAction("Action", null).show();
-								   //Log.i("TAG", "onCreate:setOnClickListener");
-								   int tab_page = onTabSelectedListener.get_fig();
-								   if (tab_page == 0)
-								   {
-									   //Log.i("TAG", "onCreate:setOnClickListener	tab_page ==0");
-									   //频繁点击刷新按键会导致程序崩溃，将这里几行注释掉之后就没事了。原因推断：绘制图像的时候刷新，数据被清除掉，然后绘制失败了，就崩溃了
-//				for (MyEquipment me : myExpandableListAdapter.myEquipments)
-//				{
-//					//me.user_data = new ArrayList<>();//刷新之前清除掉用户修改的记录
-//					me.clear_dataitem();
-//				}
-									   new MyHttp2(userdata).thread_post_do_data("get_my_equipment", userdata.get_str_data(), userdata.net_md5, hander_1);
-									   new MyHttp2(userdata).thread_post_do_data("ld_select", userdata.get_str_data(), userdata.net_md5, ldadapter.hander_ld);
-									   //Log.i("TAG", "onCreate:setOnClickListener	tab_page ==0  1");
-								   }
-								   else if (tab_page == 1)
-								   {
-									   Log.i("TAG", "onCreate:setOnClickListener  tab_page == 1");
+			}
+			else
+			{
+				//#温度:28#湿度:68#@灯0[0-1]:1#@灯1[0-1]:1#
+				//msg.what 是视图的编号，从0开始
+				String str_data = (String) msg.obj;
+				Log.e("TAG", "handleMessage: MyHttp ok\n" + str_data);
+				final int end = JaoYan.get_end_id(str_data);
+				final String log = JaoYan.get_log_id(str_data);
+				if (end > 0 && log != null)
+				{
+					Toast.makeText(MainActivity.this, log, Toast.LENGTH_SHORT).show();
+				}
+				else if (end == 0 && log != null)
+				{
+					if ("SET error 2 越权".equals(log))
+					{
+						Toast.makeText(MainActivity.this, "未查询到您绑定的设备",
+									   Toast.LENGTH_SHORT
+						).show();
+						myExpandableListAdapter.myEquipments.clear();
+					}
+					else
+					{
+						if (myExpandableListAdapter.myEquipments.get(msg.what).addData_(log) ==
+							MyEquipment.NEED_INFO)
+						{
+							//new MyHttp().thread_send_Post_String(MyHttp.IP + "get_equipment_info", userdata.get_str_data().toString() + "eid=" + myExpandableListAdapter.myEquipments.get(msg.what).eid, hander_3, msg.what);
+							HashMap<String, Object> dict = userdata.get_dict_data();
+							dict.put("eid", myExpandableListAdapter.myEquipments.get(msg.what).eid);
+							new MyHttp2(userdata).thread_post_str("get_equipment_info",
+																  MyJson.toJson(dict),
+																  userdata.net_md5, hander_3,
+																  msg.what
+							);
 
-									   Intent intent;
-									   intent = new Intent(MainActivity.this, AddLD.class);
-									   startActivityForResult(intent, FIG_ADD_LD_);//新建联动
-									   Log.i("TAG", "onCreate:setOnClickListener  tab_page == 1   end");
-								   }
-								   else if (tab_page == 2)
-								   {
-									   //不同的页面 原先的刷新按键放入不同的功能
-									   Intent intent;
-									   intent = new Intent(MainActivity.this, ShareGetOrFor.class);
-									   //Log.i("TAG", "onCreate:setOnClickListener	1");
-									   long[] list_eid = new long[myExpandableListAdapter.myEquipments.size()];
-									   String[] list_name = new String[myExpandableListAdapter.myEquipments.size()];
+						}
+					}
+				}
+				else
+				{
+					Toast.makeText(MainActivity.this, "服务器返回了不认识的数据emmmm",
+								   Toast.LENGTH_SHORT
+					).show();
+					Log.i("TAG", "handleMessage: 服务器返回了不认识的数据emmmm   " + str_data);
+				}
 
-									   //Log.i("TAG", "onCreate:setOnClickListener	2");
-									   for (int i = 0; i < myExpandableListAdapter.myEquipments.size(); i++)
-									   {
-										   list_eid[i] = myExpandableListAdapter.myEquipments.get(i).eid;
-										   list_name[i] = myExpandableListAdapter.myEquipments.get(i).name;
-									   }
-									   //Log.i("TAG", "onCreate:setOnClickListener	3");
-									   intent.putExtra("list_eid", list_eid);
-									   intent.putExtra("list_name", list_name);
-									   //Log.i("TAG", "onCreate:setOnClickListener	4");
-									   startActivityForResult(intent, FIG_SHARE_E_);//打开分享页面
-
-								   }
-							   });
-		ldadapter.set_userdata(userdata);
-		Log.i("TAG", "onCreate: onCreate完毕");
-	}
-
-	/*
-	获取此用户绑定的所有的设备的信息
-	负责处理按键里的线程
-	*/
-
+			}
+			myExpandableListAdapter.notifyDataSetChanged();
+			ldadapter.notifyDataSetChanged();
+		}
+	};
 	private final Handler hander_1 = new Handler(Looper.getMainLooper())
 	{
 		public void handleMessage(Message msg)
 		{
 			if (msg.what == MyHttp2.MyHttp_ERROR)
 			{
-				Toast.makeText(MainActivity.this, "无法链接到服务器,请检查网络", Toast.LENGTH_SHORT).show();
+				Toast.makeText(MainActivity.this, "无法链接到服务器,请检查网络", Toast.LENGTH_SHORT)
+					 .show();
 			}
 			else if (msg.what == MyHttp2.MyKeyer_ERROR)
 			{
-				Toast.makeText(MainActivity.this, "数据解析失败，请重新登录", Toast.LENGTH_SHORT).show();
+				Toast.makeText(MainActivity.this, "数据解析失败，请重新登录", Toast.LENGTH_SHORT)
+					 .show();
 			}
 			else if (msg.what == 0)
 			{
@@ -298,6 +272,229 @@ public class MainActivity extends AppCompatActivity
 
 		}
 	};
+	View other_view;
+	View liandong_view;
+	MySqlLite sql;
+	MyPagerAdapter myPagerAdapter;
+
+	/*
+	获取此用户绑定的所有的设备的信息
+	负责处理按键里的线程
+	*/ MyFloatingActionButton fab;
+	ArrayList<ALdData> lddatas;
+
+
+	/*
+	获取 eid = msg.what 的设备的传感器等信息，并刷新界面显示
+	 */
+	private final Handler hander_4 = new Handler(Looper.getMainLooper())//负责处理按键里的线程
+	{
+		public void handleMessage(Message msg)
+		{
+
+
+			if (msg.what == MyHttp2.MyHttp_ERROR)
+			{
+				Toast.makeText(MainActivity.this, "无法链接到服务器,请检查网络", Toast.LENGTH_SHORT)
+					 .show();
+			}
+			else if (msg.what == MyHttp2.MyKeyer_ERROR)
+			{
+				Toast.makeText(MainActivity.this, "数据解析失败，请重新登录", Toast.LENGTH_SHORT)
+					 .show();
+			}
+			else if (msg.what >= 0)
+			{
+				String str_data = (String) msg.obj;
+				myExpandableListAdapter.myEquipments.clear();
+				lddatas.clear();
+				Toast.makeText(MainActivity.this, str_data, Toast.LENGTH_SHORT).show();
+				new MyHttp2(userdata).thread_post_do_data("get_my_equipment",
+														  userdata.get_str_data(), userdata.net_md5,
+														  hander_1
+				);
+				new MyHttp2(userdata).thread_post_do_data("ld_select", userdata.get_str_data(),
+														  userdata.net_md5, ldadapter.hander_ld
+				);
+
+			}
+		}
+
+	};
+
+
+	/*
+	获取 eid = msg.what 的设备的状态值对应的 info 详细描述，并刷新界面显示
+	 */
+
+	//protected static final int CHANGE_UI = 0, ERROR = -1;
+	@SuppressLint("Recycle")
+	@Override
+	protected void onCreate(Bundle savedInstanceState)
+	{
+		//textView.setText(getResources().getString(R.string.window1));
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_main);
+		if (SelectServer.need_show_select_page(getApplicationContext()))
+		{
+			Intent intent;
+			intent = new Intent(MainActivity.this, SelectServerActivity.class);
+			startActivityIfNeeded(intent, FIG_SELCT_SERVER_PAGE_);//打开服务器选择页面
+			return;
+			//
+		}
+
+		//给左右滑动页面嵌套列表视图，实现下拉刷新。
+		//标签页面的页面的数据视图转换工具类
+		myPagerAdapter = new MyPagerAdapter();
+		//viewPager标签页面 的设置
+		View view;
+
+		//设备页面占位
+		view = inflate(MainActivity.this, R.layout.equipment_list, null);
+		expandableListView = view.findViewById(R.id.equipment_list_ExpandableListView);
+
+		//填充数据
+		myExpandableListAdapter = new MyExpandableListAdapter(MainActivity.this);
+		expandableListView.setAdapter(myExpandableListAdapter);
+		myPagerAdapter.viewLists.add(view);
+
+		lddatas = new ArrayList<>();
+		ldadapter = new LdExpandableListAdapter(MainActivity.this, lddatas,
+												myExpandableListAdapter.myEquipments
+		);
+		//关于这里有个很扯的错误，用 getApplicationContext() 获取的 context 无法正常构建弹出窗口
+
+
+		//联动页面的添加，注意，要按顺序
+		liandong_view = inflate(MainActivity.this, R.layout.equipment_list, null);
+		ldexpandableListView = liandong_view.findViewById(R.id.equipment_list_ExpandableListView);
+		ldexpandableListView.setAdapter(ldadapter);
+		myPagerAdapter.viewLists.add(liandong_view);
+
+		//用户页面占位
+		other_view = inflate(MainActivity.this, R.layout.other_activity, null);
+		myPagerAdapter.viewLists.add(other_view);
+
+
+		//标签页面的页面
+		ViewPager viewPager = findViewById(R.id.view_pager);
+		viewPager.setAdapter(myPagerAdapter);
+
+		//标签页面的标签
+		TabLayout tabs = findViewById(R.id.tabs);
+		tabs.setupWithViewPager(viewPager);
+		Log.i("TAG", "onCreate:mainActivity fab 0");
+		Point point = new Point();
+		getWindowManager().getDefaultDisplay().getSize(point);
+		//		Log.i("TAG", "onTouchEvent: point.getWidth  " + point.x);
+		//		Log.i("TAG", "onTouchEvent: point.getHeight  " + point.y);
+		//		Log.i("TAG", "onTouchEvent: expandableListView.getWidth  " + other_view.getWidth());
+		//		Log.i("TAG", "onTouchEvent: expandableListView.getHeight  " + other_view.getHeight());
+
+		fab = findViewById(R.id.fab);
+		fab.setMAX(point.x, point.y);//限制可移动的范围
+		final GuidePageChangeListener onTabSelectedListener = new GuidePageChangeListener(fab);
+		tabs.addOnTabSelectedListener(onTabSelectedListener);
+		//从本地数据库查询用户登录信息
+		Log.i("TAG", "onCreate:mainActivity数据库 1");
+
+
+		userdata = null;
+		sql = new MySqlLite(getApplicationContext());
+		userdata = sql.get_login_data();
+		if (userdata == null || userdata.email == null || userdata.email.equals(""))
+		{
+			//查询数据库，没有用户登录过
+			Toast.makeText(MainActivity.this, "没有用户登录", Toast.LENGTH_SHORT).show();
+			Intent intent;
+			intent = new Intent(MainActivity.this, Login.class);
+			Log.i("TAG", "onCreate:mainActivity数据库6");
+			startActivityIfNeeded(intent, FIG_USER_LOGIN_);//打开登陆界面
+		}
+		else
+		{
+			Log.i("TAG", "onCreate: mainActivity数据库7" + userdata.get_str_data());
+			//查询到最后一次登录的用户名
+			//userdata = sql.get_login_data();
+			Log.i("TAG",
+				  "onCreate: mainActivity数据库8 用户本地信息加载完毕" + userdata.get_str_data()
+			);
+			//Toast.makeText(MainActivity.this, "用户本地信息加载完毕", Toast.LENGTH_SHORT).show();
+			new MyHttp2(userdata).thread_post_do_data("get_my_equipment", userdata.get_str_data(),
+													  userdata.net_md5, hander_1
+			);
+			new MyHttp2(userdata).thread_post_do_data("ld_select", userdata.get_str_data(),
+													  userdata.net_md5, ldadapter.hander_ld
+			);
+
+			Log.i("TAG", "onCreate: mainActivity数据库9数据库完毕" + userdata.get_str_data());
+		}
+
+
+		//右下角的图标
+		fab.setOnClickListener(view1 -> {
+			//Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+			//Log.i("TAG", "onCreate:setOnClickListener");
+			int tab_page = onTabSelectedListener.get_fig();
+			if (tab_page == 0)
+			{
+				//Log.i("TAG", "onCreate:setOnClickListener	tab_page ==0");
+				//频繁点击刷新按键会导致程序崩溃，将这里几行注释掉之后就没事了。原因推断：绘制图像的时候刷新，数据被清除掉，然后绘制失败了，就崩溃了
+				//				for (MyEquipment me : myExpandableListAdapter.myEquipments)
+				//				{
+				//					//me.user_data = new ArrayList<>();//刷新之前清除掉用户修改的记录
+				//					me.clear_dataitem();
+				//				}
+				new MyHttp2(userdata).thread_post_do_data("get_my_equipment",
+														  userdata.get_str_data(), userdata.net_md5,
+														  hander_1
+				);
+				new MyHttp2(userdata).thread_post_do_data("ld_select", userdata.get_str_data(),
+														  userdata.net_md5, ldadapter.hander_ld
+				);
+				//Log.i("TAG", "onCreate:setOnClickListener	tab_page ==0  1");
+			}
+			else if (tab_page == 1)
+			{
+				Log.i("TAG", "onCreate:setOnClickListener  tab_page == 1");
+
+				Intent intent;
+				intent = new Intent(MainActivity.this, AddLD.class);
+				startActivityIfNeeded(intent, FIG_ADD_LD_);//新建联动
+				Log.i("TAG", "onCreate:setOnClickListener  tab_page == 1   end");
+			}
+			else if (tab_page == 2)
+			{
+				//不同的页面 原先的刷新按键放入不同的功能
+				Intent intent;
+				intent = new Intent(MainActivity.this, ShareGetOrFor.class);
+				//Log.i("TAG", "onCreate:setOnClickListener	1");
+				long[] list_eid = new long[myExpandableListAdapter.myEquipments.size()];
+				String[] list_name = new String[myExpandableListAdapter.myEquipments.size()];
+
+				//Log.i("TAG", "onCreate:setOnClickListener	2");
+				for (int i = 0; i < myExpandableListAdapter.myEquipments.size(); i++)
+				{
+					list_eid[i] = myExpandableListAdapter.myEquipments.get(i).eid;
+					list_name[i] = myExpandableListAdapter.myEquipments.get(i).name;
+				}
+				//Log.i("TAG", "onCreate:setOnClickListener	3");
+				intent.putExtra("list_eid", list_eid);
+				intent.putExtra("list_name", list_name);
+				//Log.i("TAG", "onCreate:setOnClickListener	4");
+				startActivityIfNeeded(intent, FIG_SHARE_E_);//打开分享页面
+
+			}
+		});
+		ldadapter.set_userdata(userdata);
+		Log.i("TAG", "onCreate: onCreate完毕");
+	}
+
+
+	/*
+	删除一个设备之后，刷新全局
+	 */
 
 	//刷新已经有的设备的数据
 	private void new_data()
@@ -307,166 +504,11 @@ public class MainActivity extends AppCompatActivity
 		{
 			HashMap<String, Object> dict = userdata.get_dict_data();
 			dict.put("eid", myExpandableListAdapter.myEquipments.get(k).eid);
-			new MyHttp2(userdata).thread_post_str("get_equipment_data", MyJson.toJson(dict), userdata.net_md5, hander_2, k);
+			new MyHttp2(userdata).thread_post_str("get_equipment_data", MyJson.toJson(dict),
+												  userdata.net_md5, hander_2, k
+			);
 		}
 	}
-
-
-	/*
-	获取 eid = msg.what 的设备的传感器等信息，并刷新界面显示
-	 */
-
-	private final Handler hander_2 = new Handler(Looper.getMainLooper())//负责处理按键里的线程
-	{
-		public void handleMessage(Message msg)
-		{
-			if (msg.what == MyHttp2.MyHttp_ERROR)
-			{
-				Log.e("TAG", "handleMessage: MyHttp error");
-				Toast.makeText(getApplicationContext(), "网络异常", Toast.LENGTH_SHORT).show();
-				//在这里重新发送请求 ？
-			}
-			else if (msg.what == MyHttp2.MyKeyer_ERROR)
-			{
-				Log.e("TAG", "handleMessage: MyHttp error");
-				Toast.makeText(getApplicationContext(), "解析数据错误，请重新登录", Toast.LENGTH_SHORT).show();
-
-			}
-			else
-			{
-				//#温度:28#湿度:68#@灯0[0-1]:1#@灯1[0-1]:1#
-				//msg.what 是视图的编号，从0开始
-				String str_data = (String) msg.obj;
-				Log.e("TAG", "handleMessage: MyHttp ok\n" + str_data);
-				final int end = JaoYan.get_end_id(str_data);
-				final String log = JaoYan.get_log_id(str_data);
-				if (end > 0 && log != null)
-				{
-					Toast.makeText(MainActivity.this, log, Toast.LENGTH_SHORT).show();
-				}
-				else if (end == 0 && log != null)
-				{
-					if ("SET error 2 越权".equals(log))
-					{
-						Toast.makeText(MainActivity.this, "未查询到您绑定的设备", Toast.LENGTH_SHORT).show();
-						myExpandableListAdapter.myEquipments.clear();
-					}
-					else
-					{
-						if (myExpandableListAdapter.myEquipments.get(msg.what).addData_(log) == MyEquipment.NEED_INFO)
-						{
-							//new MyHttp().thread_send_Post_String(MyHttp.IP + "get_equipment_info", userdata.get_str_data().toString() + "eid=" + myExpandableListAdapter.myEquipments.get(msg.what).eid, hander_3, msg.what);
-							HashMap<String, Object> dict = userdata.get_dict_data();
-							dict.put("eid", myExpandableListAdapter.myEquipments.get(msg.what).eid);
-							new MyHttp2(userdata).thread_post_str("get_equipment_info", MyJson.toJson(dict), userdata.net_md5, hander_3, msg.what);
-
-						}
-					}
-				}
-				else
-				{
-					Toast.makeText(MainActivity.this, "服务器返回了不认识的数据emmmm", Toast.LENGTH_SHORT).show();
-					Log.i("TAG", "handleMessage: 服务器返回了不认识的数据emmmm   " + str_data);
-				}
-
-			}
-			myExpandableListAdapter.notifyDataSetChanged();
-			ldadapter.notifyDataSetChanged();
-		}
-	};
-
-
-	/*
-	获取 eid = msg.what 的设备的状态值对应的 info 详细描述，并刷新界面显示
-	 */
-
-	private final Handler hander_3 = new Handler(Looper.getMainLooper())//负责处理按键里的线程
-	{
-		public void handleMessage(Message msg)
-		{
-			if (msg.what == MyHttp2.MyHttp_ERROR)
-			{
-				Log.e("TAG", "handleMessage: MyHttp error");
-				Toast.makeText(getApplicationContext(), "网络异常", Toast.LENGTH_SHORT).show();
-				//在这里重新发送请求 ？
-			}
-			else if (msg.what == MyHttp2.MyKeyer_ERROR)
-			{
-				Log.e("TAG", "handleMessage: MyHttp error");
-				Toast.makeText(getApplicationContext(), "解析数据错误，请重新登录", Toast.LENGTH_SHORT).show();
-
-			}
-			else
-			{
-				//msg.what 是视图的编号，从0开始
-				String str_data = (String) msg.obj;
-				Log.e("TAG", "handleMessage: MyHttp ok\n" + str_data);
-				final int end = JaoYan.get_end_id(str_data);
-				final String log = JaoYan.get_log_id(str_data);
-				if (end > 0 && log != null)
-				{
-					Toast.makeText(MainActivity.this, log, Toast.LENGTH_SHORT).show();
-					//info允许为空
-					//我随意填充点儿数据，防止他一直进行info请求
-					myExpandableListAdapter.myEquipments.get(msg.what).set_info_isnull();
-				}
-				else if (end == 0 && log != null)
-				{
-					if ("SET error 2 越权".equals(log))
-					{
-						Toast.makeText(MainActivity.this, "未查询到您绑定的设备", Toast.LENGTH_SHORT).show();
-						myExpandableListAdapter.myEquipments.clear();
-					}
-					else
-					{
-						myExpandableListAdapter.myEquipments.get(msg.what).addInfo_(log);
-					}
-					myExpandableListAdapter.notifyDataSetChanged();
-					ldadapter.notifyDataSetChanged();
-				}
-				else
-				{
-					Toast.makeText(MainActivity.this, "服务器返回了不认识的数据emmmm", Toast.LENGTH_SHORT).show();
-					Log.i("TAG", "handleMessage: 服务器返回了不认识的数据emmmm   " + str_data);
-				}
-			}
-		}
-
-	};
-
-
-	/*
-	删除一个设备之后，刷新全局
-	 */
-
-	private final Handler hander_4 = new Handler(Looper.getMainLooper())//负责处理按键里的线程
-	{
-		public void handleMessage(Message msg)
-		{
-
-
-			if (msg.what == MyHttp2.MyHttp_ERROR)
-			{
-				Toast.makeText(MainActivity.this, "无法链接到服务器,请检查网络", Toast.LENGTH_SHORT).show();
-			}
-			else if (msg.what == MyHttp2.MyKeyer_ERROR)
-			{
-				Toast.makeText(MainActivity.this, "数据解析失败，请重新登录", Toast.LENGTH_SHORT).show();
-			}
-			else if (msg.what >= 0)
-			{
-				String str_data = (String) msg.obj;
-				myExpandableListAdapter.myEquipments.clear();
-				lddatas.clear();
-				Toast.makeText(MainActivity.this, str_data, Toast.LENGTH_SHORT).show();
-				new MyHttp2(userdata).thread_post_do_data("get_my_equipment", userdata.get_str_data(), userdata.net_md5, hander_1);
-				new MyHttp2(userdata).thread_post_do_data("ld_select", userdata.get_str_data(), userdata.net_md5, ldadapter.hander_ld);
-
-			}
-		}
-
-	};
-
 
 	//打开其他页面的监听函数
 	protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data)
@@ -490,8 +532,13 @@ public class MainActivity extends AppCompatActivity
 					lddatas.clear();
 					myExpandableListAdapter.notifyDataSetChanged();
 					ldadapter.notifyDataSetChanged();
-					new MyHttp2(userdata).thread_post_do_data("get_my_equipment", userdata.get_str_data(), userdata.net_md5, hander_1);
-					new MyHttp2(userdata).thread_post_do_data("ld_select", userdata.get_str_data(), userdata.net_md5, ldadapter.hander_ld);
+					new MyHttp2(userdata).thread_post_do_data("get_my_equipment",
+															  userdata.get_str_data(),
+															  userdata.net_md5, hander_1
+					);
+					new MyHttp2(userdata).thread_post_do_data("ld_select", userdata.get_str_data(),
+															  userdata.net_md5, ldadapter.hander_ld
+					);
 					Log.i("TAG", "onActivityResult: 收到登录信息");
 					return;
 				}
@@ -523,7 +570,9 @@ public class MainActivity extends AppCompatActivity
 			case FIG_SHARE_E_:
 				if (resultCode == 1)
 				{
-					new MyHttp2(userdata).thread_post_do_data("ld_select", userdata.get_str_data(), userdata.net_md5, ldadapter.hander_ld);
+					new MyHttp2(userdata).thread_post_do_data("ld_select", userdata.get_str_data(),
+															  userdata.net_md5, ldadapter.hander_ld
+					);
 				}
 				//这里不要break，联合下面的刷新设备，一起工作
 			case FIG_ADD_E_:
@@ -531,13 +580,18 @@ public class MainActivity extends AppCompatActivity
 			case FIG_E_CLICK_NAME_VIEW_:
 				if (resultCode == 1)
 				{
-					new MyHttp2(userdata).thread_post_do_data("get_my_equipment", userdata.get_str_data(), userdata.net_md5, hander_1);
+					new MyHttp2(userdata).thread_post_do_data("get_my_equipment",
+															  userdata.get_str_data(),
+															  userdata.net_md5, hander_1
+					);
 				}
 				return;
 			case FIG_ADD_LD_:
 				if (resultCode == 1)
 				{
-					new MyHttp2(userdata).thread_post_do_data("ld_select", userdata.get_str_data(), userdata.net_md5, ldadapter.hander_ld);
+					new MyHttp2(userdata).thread_post_do_data("ld_select", userdata.get_str_data(),
+															  userdata.net_md5, ldadapter.hander_ld
+					);
 				}
 				break;
 			case FIG_OPEN_WIFI_:
@@ -547,14 +601,25 @@ public class MainActivity extends AppCompatActivity
 					intent = new Intent(MainActivity.this, AddEquipments.class);
 					Log.i("TAG", "new_equipment: " + userdata.uid);
 					intent.putExtra("uid", userdata.uid);
-					startActivityForResult(intent, FIG_ADD_E_);//打开界面
+					startActivityIfNeeded(intent, FIG_ADD_E_);//打开界面
 				}
 				else
 				{
-					Toast.makeText(MainActivity.this, "需要打开wifi才能开始设备的添加", Toast.LENGTH_SHORT).show();
-					//startActivityForResult(new Intent(android.provider.Settings.ACTION_WIFI_SETTINGS),FIG_OPEN_WIFI_);
+					Toast.makeText(MainActivity.this, "需要打开wifi才能开始设备的添加",
+								   Toast.LENGTH_SHORT
+					).show();
+					//startActivityIfNeeded(new Intent(android.provider.Settings.ACTION_WIFI_SETTINGS),FIG_OPEN_WIFI_);
 				}
 				break;
+			case FIG_SELCT_SERVER_PAGE_:
+			{
+				if (SelectServer.need_show_select_page(getApplicationContext()))
+				{
+					finish();
+					System.exit(0);
+				}
+			}
+
 		}
 	}
 
@@ -567,7 +632,7 @@ public class MainActivity extends AppCompatActivity
 		intent.putExtra("sex", userdata.sex);
 		intent.putExtra("name", userdata.name);
 		intent.putExtra("user_head", userdata.user_head);
-		startActivityForResult(intent, FIG_USER_DATA_SET_);//打开用户信息界面
+		startActivityIfNeeded(intent, FIG_USER_DATA_SET_);//打开用户信息界面
 	}
 
 	//"切换账户"按键
@@ -575,7 +640,7 @@ public class MainActivity extends AppCompatActivity
 	{
 		Intent intent = new Intent(MainActivity.this, Login.class);
 		//用户登陆
-		startActivityForResult(intent, FIG_USER_LOGIN_);//打开登陆界面
+		startActivityIfNeeded(intent, FIG_USER_LOGIN_);//打开登陆界面
 	}
 
 	//注销/退出登录
@@ -597,23 +662,34 @@ public class MainActivity extends AppCompatActivity
 		System.exit(1);
 	}
 
+	public void other_button_select_server(View v)
+	{
+		Intent intent;
+		intent = new Intent(MainActivity.this, SelectServerActivity.class);
+		startActivityIfNeeded(intent, FIG_SELCT_SERVER_PAGE_);//打开服务器选择页面
+	}
+
 	public void pw_updata(View v)
 	{
 		Log.i("TAG", "pw_updata: in");
 		Intent intent;
 		intent = new Intent(MainActivity.this, PwUpdata.class);
-		startActivityForResult(intent, FIG_PW_UPDATA_);
+		startActivityIfNeeded(intent, FIG_PW_UPDATA_);
 		Log.i("TAG", "pw_updata: out");
 	}
 
 
 	//申请权限回调函数
-	public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults)
+	public void onRequestPermissionsResult(
+			int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults)
 	{
 		super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-		if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-				|| ContextCompat.checkSelfPermission(this, Manifest.permission.CHANGE_WIFI_STATE) != PackageManager.PERMISSION_GRANTED
-				|| ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_WIFI_STATE) != PackageManager.PERMISSION_GRANTED)
+		if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) !=
+			PackageManager.PERMISSION_GRANTED ||
+			ContextCompat.checkSelfPermission(this, Manifest.permission.CHANGE_WIFI_STATE) !=
+			PackageManager.PERMISSION_GRANTED ||
+			ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_WIFI_STATE) !=
+			PackageManager.PERMISSION_GRANTED)
 		{
 			Log.e("TAG", "onRequestPermissionsResult: 获取权限失败");
 		}
@@ -626,7 +702,12 @@ public class MainActivity extends AppCompatActivity
 	void open_get_Permissions()
 	{
 		Log.e("TAG", "open_get_Permissions: 1");
-		ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.CHANGE_WIFI_STATE, Manifest.permission.ACCESS_WIFI_STATE}, FIG_WIFI_PERMISSIONS_);
+		ActivityCompat.requestPermissions(this,
+										  new String[]{Manifest.permission.ACCESS_FINE_LOCATION,
+													   Manifest.permission.CHANGE_WIFI_STATE,
+													   Manifest.permission.ACCESS_WIFI_STATE},
+										  FIG_WIFI_PERMISSIONS_
+		);
 		Log.e("TAG", "open_get_Permissions: 2");
 	}
 
@@ -634,16 +715,19 @@ public class MainActivity extends AppCompatActivity
 	public void new_equipment(View v)
 	{
 		//Toast.makeText(MainActivity.this, "你点击了添加新设备", Toast.LENGTH_SHORT).show();
-		if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-				|| ContextCompat.checkSelfPermission(this, Manifest.permission.CHANGE_WIFI_STATE) != PackageManager.PERMISSION_GRANTED
-				|| ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_WIFI_STATE) != PackageManager.PERMISSION_GRANTED)
+		if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) !=
+			PackageManager.PERMISSION_GRANTED ||
+			ContextCompat.checkSelfPermission(this, Manifest.permission.CHANGE_WIFI_STATE) !=
+			PackageManager.PERMISSION_GRANTED ||
+			ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_WIFI_STATE) !=
+			PackageManager.PERMISSION_GRANTED)
 		{
 			//未授权，申请授权
-			new AlertDialog.Builder(this)
-					.setTitle("关于权限用途")
-					.setMessage("获取WiFi的控制权是为了连接节点设备，获取定位权限是为了获取wifi列表。并不会以此定位您的位置信息，wifi信息只会与您要绑定的设备共享，程序不会收集、储存您wifi信息和定位信息，更不会将这些上传到服务器。")
-					.setPositiveButton("已阅", (dialog, which) -> open_get_Permissions()
-					).show();
+			new AlertDialog.Builder(this).setTitle("关于权限用途").setMessage(
+												 "获取WiFi的控制权是为了连接节点设备，获取定位权限是为了获取wifi列表。并不会以此定位您的位置信息，wifi信息只会与您要绑定的设备共享，程序不会收集、储存您wifi信息和定位信息，更不会将这些上传到服务器。")
+										 .setPositiveButton("已阅",
+															(dialog, which) -> open_get_Permissions()
+										 ).show();
 		}
 		else if (new SetWifi(getApplicationContext()).WiFi_start())
 		{
@@ -651,12 +735,16 @@ public class MainActivity extends AppCompatActivity
 			intent = new Intent(MainActivity.this, AddEquipments.class);
 			Log.i("TAG", "new_equipment: " + userdata.uid);
 			intent.putExtra("uid", userdata.uid);
-			startActivityForResult(intent, FIG_ADD_E_);//打开界面
+			startActivityIfNeeded(intent, FIG_ADD_E_);//打开界面
 		}
 		else
 		{
-			Toast.makeText(MainActivity.this, "请打开wifi\n(用于向节点发送数据)", Toast.LENGTH_SHORT).show();
-			startActivityForResult(new Intent(android.provider.Settings.ACTION_WIFI_SETTINGS), FIG_OPEN_WIFI_);
+			Toast.makeText(MainActivity.this, "请打开wifi\n(用于向节点发送数据)",
+						   Toast.LENGTH_SHORT
+			).show();
+			startActivityIfNeeded(new Intent(android.provider.Settings.ACTION_WIFI_SETTINGS),
+								  FIG_OPEN_WIFI_
+			);
 		}
 
 	}
@@ -756,15 +844,47 @@ public class MainActivity extends AppCompatActivity
 	 */
 	public class MyExpandableListAdapter extends BaseExpandableListAdapter
 	{
+		final int TIME_OUT = 900;//ms
+		final int TIME_OUT_I = 50;//ms//每隔多少ms检查一次变量
+		private final Handler hander_2_ = new Handler(Looper.getMainLooper())//负责处理按键里的线程
+		{
+			public void handleMessage(Message msg)
+			{
+				if (msg.what == MyHttp2.MyHttp_ERROR)
+				{
+					Log.e("TAG", "handleMessage: MyHttp error");
+					Toast.makeText(getApplicationContext(), "网络异常", Toast.LENGTH_SHORT).show();
+					//在这里重新发送请求 ？
+				}
+				else if (msg.what == MyHttp2.MyKeyer_ERROR)
+				{
+					Log.e("TAG", "handleMessage: MyHttp error");
+					Toast.makeText(getApplicationContext(), "解析数据错误，请重新登录",
+								   Toast.LENGTH_SHORT
+					).show();
+
+				}
+				else if (msg.what > 0)
+				{
+					Log.e("TAG", "handleMessage: msg.what>0" + msg.obj);
+					Toast.makeText(getApplicationContext(), (String) msg.obj, Toast.LENGTH_SHORT)
+						 .show();
+				}
+				else if (msg.what == 0)
+				{
+					Log.e("TAG", "handleMessage: msg.what==0");
+					myExpandableListAdapter.notifyDataSetChanged();
+					ldadapter.notifyDataSetChanged();
+				}
+
+			}
+		};
 		Context context;
 		ArrayList<MyEquipment> myEquipments;
 		ArrayList<TextView> textView2_s;
 		/*
 		建立一个线程，对time_onclick_back_ms进行倒计时，等于0的时候就发送更新请求，并将此值置为 -1
-		 */
-		int time_onclick_back_ms;
-		final int TIME_OUT = 900;//ms
-		final int TIME_OUT_I = 50;//ms//每隔多少ms检查一次变量
+		 */ int time_onclick_back_ms;
 		boolean thread_exit;
 
 		public MyExpandableListAdapter(Context context)
@@ -828,7 +948,10 @@ public class MainActivity extends AppCompatActivity
 							HashMap<String, Object> dict = userdata.get_dict_data();
 							dict.put("eid", myEquipment.eid);
 							dict.put("send", str_data);
-							msg = new MyHttp2(userdata).post_str("set_equipment_data", MyJson.toJson(dict), userdata.net_md5, k);
+							msg = new MyHttp2(userdata).post_str("set_equipment_data",
+																 MyJson.toJson(dict),
+																 userdata.net_md5, k
+							);
 							if (msg.what == MyHttp2.MyHttp_ERROR)
 							{
 								//网络错误重新发送
@@ -858,7 +981,11 @@ public class MainActivity extends AppCompatActivity
 
 									HashMap<String, Object> dict1 = userdata.get_dict_data();
 									dict1.put("eid", myEquipment.eid);
-									new MyHttp2(userdata).thread_post_str("get_equipment_info", MyJson.toJson(dict1), userdata.net_md5, hander_3, msg.what);
+									new MyHttp2(userdata).thread_post_str("get_equipment_info",
+																		  MyJson.toJson(dict1),
+																		  userdata.net_md5,
+																		  hander_3, msg.what
+									);
 
 								}
 								//msg.what = 0;
@@ -881,39 +1008,6 @@ public class MainActivity extends AppCompatActivity
 				}
 			}.start();
 		}
-
-
-		private final Handler hander_2_ = new Handler(Looper.getMainLooper())//负责处理按键里的线程
-		{
-			public void handleMessage(Message msg)
-			{
-				if (msg.what == MyHttp2.MyHttp_ERROR)
-				{
-					Log.e("TAG", "handleMessage: MyHttp error");
-					Toast.makeText(getApplicationContext(), "网络异常", Toast.LENGTH_SHORT).show();
-					//在这里重新发送请求 ？
-				}
-				else if (msg.what == MyHttp2.MyKeyer_ERROR)
-				{
-					Log.e("TAG", "handleMessage: MyHttp error");
-					Toast.makeText(getApplicationContext(), "解析数据错误，请重新登录", Toast.LENGTH_SHORT).show();
-
-				}
-				else if (msg.what > 0)
-				{
-					Log.e("TAG", "handleMessage: msg.what>0" + msg.obj);
-					Toast.makeText(getApplicationContext(), (String) msg.obj, Toast.LENGTH_SHORT).show();
-				}
-				else if (msg.what == 0)
-				{
-					Log.e("TAG", "handleMessage: msg.what==0");
-					myExpandableListAdapter.notifyDataSetChanged();
-					ldadapter.notifyDataSetChanged();
-				}
-
-			}
-		};
-
 
 		@Override
 		public int getGroupCount()
@@ -962,7 +1056,8 @@ public class MainActivity extends AppCompatActivity
 		}
 
 		@Override
-		public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent)
+		public View getGroupView(
+				int groupPosition, boolean isExpanded, View convertView, ViewGroup parent)
 		{
 			View view;
 			//Log.i("TAG", "getGroupView: :	1");
@@ -1012,19 +1107,18 @@ public class MainActivity extends AppCompatActivity
 			equipment_name_button.setText(this.myEquipments.get(groupPosition).name);
 			//Log.i("TAG", "getGroupView: :	5");
 			final int i = groupPosition;
-			equipment_name_button.setOnClickListener(v ->
-													 {
-//				Log.e("TAG", "按键的id为: " + i);
-//				Log.e("TAG", "名字: " + myEquipments.get(i).name);
-//				Log.e("TAG", "eid: " + myEquipments.get(i).eid);
-														 //在这里插入修改硬件名称的函数
-														 Intent intent = new Intent(MainActivity.this, EquipmentInfoActivity.class);
-														 intent.putExtra("name", myEquipments.get(i).name);
-														 intent.putExtra("eid", myEquipments.get(i).eid.toString());
-//				intent.putExtra("uid", String.valueOf(userdata.uid));
-//				startActivityForResult(intent, FIG_E_RENAME_);//打开界面
-														 startActivityForResult(intent, FIG_E_CLICK_NAME_VIEW_);//打开界面
-													 });
+			equipment_name_button.setOnClickListener(v -> {
+				//				Log.e("TAG", "按键的id为: " + i);
+				//				Log.e("TAG", "名字: " + myEquipments.get(i).name);
+				//				Log.e("TAG", "eid: " + myEquipments.get(i).eid);
+				//在这里插入修改硬件名称的函数
+				Intent intent = new Intent(MainActivity.this, EquipmentInfoActivity.class);
+				intent.putExtra("name", myEquipments.get(i).name);
+				intent.putExtra("eid", myEquipments.get(i).eid.toString());
+				//				intent.putExtra("uid", String.valueOf(userdata.uid));
+				//				startActivityIfNeeded(intent, FIG_E_RENAME_);//打开界面
+				startActivityIfNeeded(intent, FIG_E_CLICK_NAME_VIEW_);//打开界面
+			});
 			//Log.i("TAG", "getGroupView: :	6");
 
 			equipment_name_button.setOnLongClickListener(new View.OnLongClickListener()
@@ -1032,24 +1126,39 @@ public class MainActivity extends AppCompatActivity
 				@Override
 				public boolean onLongClick(View v)
 				{
-					new AlertDialog.Builder(context)
-							.setTitle("删除?")
-							.setMessage("删除不仅会删除此设备，还会删除由此账户创建的和此设备直接相关的联动")
-							.setNeutralButton("删除", new DialogInterface.OnClickListener()
-							{
-								@Override
-								public void onClick(DialogInterface dialog, int which)
-								{
-									//new MyHttp().thread_send_Post_String(MyHttp.IP + "equipment_delete", userdata.get_str_data() + "data=" + myEquipments.get(i).eid, hander_4, 1);
+					new AlertDialog.Builder(context).setTitle("删除?").setMessage(
+															"删除不仅会删除此设备，还会删除由此账户创建的和此设备直接相关的联动")
+													.setNeutralButton("删除",
+																	  new DialogInterface.OnClickListener()
+																	  {
+																		  @Override
+																		  public void onClick(
+																				  DialogInterface dialog,
+																				  int which)
+																		  {
+																			  //new MyHttp().thread_send_Post_String(MyHttp.IP + "equipment_delete", userdata.get_str_data() + "data=" + myEquipments.get(i).eid, hander_4, 1);
 
-									HashMap<String, Object> dict = userdata.get_dict_data();
-									dict.put("data", myEquipments.get(i).eid);
-									new MyHttp2(userdata).thread_post_do_data("equipment_delete", MyJson.toJson(dict), userdata.net_md5, hander_4);
-									//Log.e("TAG", "onClick: ", );
-								}
-							})
-							.setNegativeButton("取消", null)
-							.show();
+																			  HashMap<String, Object>
+																					  dict =
+																					  userdata.get_dict_data();
+																			  dict.put("data",
+																					   myEquipments.get(
+																							   i).eid
+																			  );
+																			  new MyHttp2(
+																					  userdata).thread_post_do_data(
+																					  "equipment_delete",
+																					  MyJson.toJson(
+																							  dict),
+																					  userdata.net_md5,
+																					  hander_4
+																			  );
+																			  //Log.e("TAG", "onClick: ", );
+																		  }
+																	  }
+													).setNegativeButton(getString(R.string.取消),
+																		null
+													).show();
 					return true;
 				}
 			});
@@ -1068,7 +1177,9 @@ public class MainActivity extends AppCompatActivity
 		}
 
 		@Override
-		public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent)
+		public View getChildView(
+				int groupPosition, int childPosition, boolean isLastChild, View convertView,
+				ViewGroup parent)
 		{
 			View view = null;
 			/*
@@ -1088,46 +1199,47 @@ public class MainActivity extends AppCompatActivity
 				if (itemdata.ht_get_max() == 1)//只有两种状态，用简单的开关就可以了
 				{
 					view = inflate(MainActivity.this, R.layout.item_title_switch, null);
-					Switch switch1 = view.findViewById(R.id.item_title_switch_switch);
+					SwitchMaterial switch1 = view.findViewById(R.id.item_title_switch_switch);
 					TextView textView1 = view.findViewById(R.id.item_title_switch_title);
 					//final String str1 = this.myEquipments.get(groupPosition).data_title.get(childPosition).split("[@\\[]")[1];
 					textView1.setText(itemdata.item_name);
 					switch1.setChecked(itemdata.get_now() == 1);
-					switch1.setOnCheckedChangeListener((buttonView, isChecked) ->
-													   {
-														   if (time_onclick_back_ms < 0)
-														   {
-															   //Log.i("TAG", "getChildView: :	15");
-															   buttonView.setChecked(!isChecked);
-															   //Log.i("TAG", "getChildView: :	16");
-															   Toast.makeText(MainActivity.this, "正在更新...", Toast.LENGTH_SHORT).show();
-															   return;
-														   }
-														   //出了加入队列，顺便值修改了，这样刷新之后就是显示新的值
+					switch1.setOnCheckedChangeListener((buttonView, isChecked) -> {
+						if (time_onclick_back_ms < 0)
+						{
+							//Log.i("TAG", "getChildView: :	15");
+							buttonView.setChecked(!isChecked);
+							//Log.i("TAG", "getChildView: :	16");
+							Toast.makeText(MainActivity.this, "正在更新...", Toast.LENGTH_SHORT)
+								 .show();
+							return;
+						}
+						//出了加入队列，顺便值修改了，这样刷新之后就是显示新的值
 
-														   if (isChecked)
-														   {
-															   itemdata.ht_get_values(1);
-															   //注释掉下面这行，会在网络请求的时候发生跳变动画，下同
-															   //myExpandableListAdapter.myEquipments.get(k).data_value.set(k1,String.valueOf(1));
-														   }
-														   else
-														   {
-															   itemdata.ht_get_values(0);
-															   //myExpandableListAdapter.myEquipments.get(k).user_set_date(myExpandableListAdapter.myEquipments.get(k).data_title.get(k1), 0);
-															   //myExpandableListAdapter.myEquipments.get(k).data_value.set(k1,String.valueOf(0));
-														   }
-														   myEquipment.user_set_date(itemdata.item_name, itemdata);
-														   textView2_s.get(groupPosition).setText("等待");
-														   myExpandableListAdapter.start_thread();
-													   });
+						if (isChecked)
+						{
+							itemdata.ht_get_values(1);
+							//注释掉下面这行，会在网络请求的时候发生跳变动画，下同
+							//myExpandableListAdapter.myEquipments.get(k).data_value.set(k1,String.valueOf(1));
+						}
+						else
+						{
+							itemdata.ht_get_values(0);
+							//myExpandableListAdapter.myEquipments.get(k).user_set_date(myExpandableListAdapter.myEquipments.get(k).data_title.get(k1), 0);
+							//myExpandableListAdapter.myEquipments.get(k).data_value.set(k1,String.valueOf(0));
+						}
+						myEquipment.user_set_date(itemdata.item_name, itemdata);
+						textView2_s.get(groupPosition).setText("等待");
+						myExpandableListAdapter.start_thread();
+					});
 				}
 				else if (itemdata.ht_get_max() > 1)//超过两种状态，使用可以截断的滑条来显示和操作
 				{
 					view = inflate(MainActivity.this, R.layout.item_title_seekbar, null);
 					SeekBar seekBar = view.findViewById(R.id.item_title_seekbar_seekbar);
 					TextView textView1 = view.findViewById(R.id.item_title_seekbar_title);//此条目的名称
-					final TextView textView2 = view.findViewById(R.id.item_title_seekbar_value);//滑条当前值的文本显示
+					final TextView textView2 =
+							view.findViewById(R.id.item_title_seekbar_value);//滑条当前值的文本显示
 					TextView textView3 = view.findViewById(R.id.item_title_seekbar_min);//最小值
 					TextView textView4 = view.findViewById(R.id.item_title_seekbar_max);//最大值
 					textView1.setText(itemdata.item_name);
@@ -1141,7 +1253,8 @@ public class MainActivity extends AppCompatActivity
 					{
 						//拖动中
 						@Override
-						public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser)
+						public void onProgressChanged(
+								SeekBar seekBar, int progress, boolean fromUser)
 						{
 							//修改此条目显示滑条当前值的文本框内容
 							//如果将此处填充值对应的文本，就可以实现显示状态好对应的描述
@@ -1158,7 +1271,8 @@ public class MainActivity extends AppCompatActivity
 							fab.setVisibility(View.GONE);//隐藏右下角圆圆的刷新标志/虽然可以移动，但是隐藏更防方便
 							textView2_s.get(groupPosition).setText("等待");//修改设备状态信息
 							myExpandableListAdapter.start_thread();//更新倒计时
-							myExpandableListAdapter.time_onclick_back_ms = TIME_OUT + 1;//设定为比预设值大一，就会无限制等待，让倒计时停滞
+							myExpandableListAdapter.time_onclick_back_ms =
+									TIME_OUT + 1;//设定为比预设值大一，就会无限制等待，让倒计时停滞
 						}
 
 						//滑动停止//手指离开屏幕
@@ -1182,13 +1296,17 @@ public class MainActivity extends AppCompatActivity
 				textView1.setText(itemdata.item_name);
 				TextView textView2 = view.findViewById(R.id.equipment_data_item_data);
 				textView2.setText(itemdata.text_get_now_values());
-			}else{
+			}
+			else
+			{
 				view = inflate(MainActivity.this, R.layout.item_title_text, null);
 				TextView textView1 = view.findViewById(R.id.equipment_data_item_title);
 				textView1.setText("数据异常");
 				TextView textView2 = view.findViewById(R.id.equipment_data_item_data);
 				textView2.setText("请刷新");
-				Log.e("TAG", "error : 数据整理之后数组长度不对，服务器发过来的数据是没有问题的，多线程导致的？好像是其他地方刷新的时候，刚好这里的数据没有处理完刷新导致的，之后再看看吧，现在不崩溃了，但是会闪一下？");
+				Log.e("TAG",
+					  "error : 数据整理之后数组长度不对，服务器发过来的数据是没有问题的，多线程导致的？好像是其他地方刷新的时候，刚好这里的数据没有处理完刷新导致的，之后再看看吧，现在不崩溃了，但是会闪一下？"
+				);
 			}
 			return view;//当这里返回null的时候程序会 结束/崩溃
 		}
